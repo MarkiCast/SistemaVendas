@@ -10,7 +10,7 @@ public class Cliente {
     public Cliente(){
 
     }
-    public String getName(){
+    public String getNome(){
         return name;
     }
     public Long getCpf(){
