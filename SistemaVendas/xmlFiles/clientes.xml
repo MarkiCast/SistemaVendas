@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<java version="14.0.1" class="java.beans.XMLDecoder">
- <object class="Cliente">
-  <void property="cpf">
-   <long>89800099912</long>
-  </void>
-  <void property="name">
-   <string>Klaus</string>
-  </void>
- </object>
-</java>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><clientes xmlns="klaus-marcelo"><cliente cpf="1" nome="a"/></clientes>
