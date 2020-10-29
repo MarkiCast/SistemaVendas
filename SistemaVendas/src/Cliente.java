@@ -1,15 +1,6 @@
 
-public class Cliente {
-    private String name;
-    private Long cpf;
-    
-    public Cliente(String name, Long cpf) {
-        this.name = name;
-        this.cpf = cpf;
-    }
-    public Cliente(){
+public class cliente {
 
-    }
     public String getNome(){
         return name;
     }
@@ -22,4 +13,5 @@ public class Cliente {
     public void setName(String name){
         this.name=name;
     }
+
 }
