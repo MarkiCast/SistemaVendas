@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 public class LoadStoreXml{
     public static final String xmlClientes = "./../xmlFiles/clientes.xml";
     public static final String xmlProdutos = "./../xmlFiles/produtos.xml";
+    public static final String xmlVendas = "./../xmlFiles/vendas.xml";
 
     public void addClient(File file, Document doc, Cliente c) throws Exception{
         
@@ -75,6 +76,58 @@ public class LoadStoreXml{
         StreamResult myFile = new StreamResult(file);
 
         transf.transform(source, myFile);
+    }
+    
+    public void addVenda(File file, Document doc, Venda v) throws Exception{
+        
+        Node root = doc.getFirstChild();
+        Element venda = doc.createElement("venda");
+
+        String id = Integer.toString(v.getId());
+        String valorTotal = Integer.toString(v.getValorTotal());
+        String desconto = Integer.toString(v.getDesconto());
+        String tipoPagamento = Integer.toString(v.getTipoPagamento());
+        String cpf = Long.toString(v.getCliente().getCpf());
+
+        venda.setAttribute("id", id);
+        venda.setAttribute("valor_total", valorTotal);
+        venda.setAttribute("desconto", desconto);
+        venda.setAttribute("tipoPagamento", tipoPagamento);
+        venda.setAttribute("cpf_cliente", cpf);
+
+        root.appendChild(venda);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transf = transformerFactory.newTransformer();
+
+        //transf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        //transf.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        DOMSource source = new DOMSource(doc);
+        
+        StreamResult myFile = new StreamResult(file);
+
+        transf.transform(source, myFile);
+    }
+
+    public void salvaVenda(Venda v) throws SAXException, Exception,
+            IOException, ParserConfigurationException, TransformerException {
+            
+        LoadStoreXml lsx = new LoadStoreXml();
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = factory.newDocumentBuilder();
+        Document doc;
+        Element root;
+        File xmlSales = new File(xmlVendas);
+        if(fileVazia("vendas")) {
+            doc = dBuilder.newDocument();
+            String mother = "vendas";
+            doc = lsx.createDocument(xmlSales, doc, mother);
+        }
+        
+        doc = dBuilder.parse(xmlSales);
+        lsx.addVenda(xmlSales, doc, v);
+
     }
 
     public void eraseClient(Cliente c) {
@@ -139,7 +192,7 @@ public class LoadStoreXml{
 
     }
 
-        public void cadastraProduto(Produto p) throws SAXException, Exception,
+    public void cadastraProduto(Produto p) throws SAXException, Exception,
             IOException, ParserConfigurationException, TransformerException {
             
         LoadStoreXml lsx = new LoadStoreXml();
@@ -242,6 +295,12 @@ public class LoadStoreXml{
     public boolean fileVazia(String file){
         if(file == "produtos"){
             File f = new File(xmlProdutos);
+            if(f.length()==0){
+                return true;
+            }
+            return false;
+        }else if(file == "vendas"){
+            File f = new File(xmlVendas);
             if(f.length()==0){
                 return true;
             }
