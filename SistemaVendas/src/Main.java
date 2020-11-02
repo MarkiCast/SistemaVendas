@@ -159,6 +159,9 @@ class Caixa {
 					listaVendas.add(venda);
 					
 					venda.calcularTotal();
+					for (int i = 0; i<produtosVenda.size()-1; i++) {
+						System.out.println(produtosVenda.get(i).getDesc());
+					}
 					System.out.printf("O valor total foi "+venda.getValorTotal());
 					System.out.printf("\nO id da venda foi "+venda.getId());
 					break;
