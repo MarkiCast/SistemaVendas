@@ -6,16 +6,22 @@ public class Venda {
 	private int valorTotal = 0;
 	private int desconto = 100;
 	private byte tipoPagamento;
+	private int id;
 	Cliente cliente;
 	ArrayList<Produto> produtos;
 
-	public Venda(int desconto, byte tipoPagamento, Cliente cliente, ArrayList<Produto> produtos) {
+	public Venda(int id, int desconto, byte tipoPagamento, Cliente cliente, ArrayList<Produto> produtos) {
+		this.id = id
 		this.desconto = desconto;
 		this.tipoPagamento = tipoPagamento;
 		this.cliente = cliente;
 		this.produtos = produtos;
 	}
 
+	public int getId() {
+		return id
+	}
+	
 	public int getValorTotal() {
 		return valorTotal;
 	}
