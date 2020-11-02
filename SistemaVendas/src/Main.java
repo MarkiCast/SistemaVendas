@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,9 +8,41 @@ import javax.xml.transform.TransformerException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-public class Main {
+public class Caixa {
+	LinkedList<Venda> listaVendas; // declaro lista vendas
 
-	public static void main(String[] args) throws SAXException, Exception,
+	public Caixa() {
+		ArrayList<Venda> listaVendas = new ArrayList<Venda>();	//crio a lista ao criar caixa
+		this.listaVendas = listaVendas;
+	}
+	public boolean fechamentoDeCaixa() {
+		valorFinal = 0;
+		for (i=0; i<listaVendas.size(); i++){
+			preco = listaVendas[i].calcularTotal();
+			valorFinal = valorFinal + preco;
+			//salvar(listaVendas[i]);    //falta implementar
+		}
+	}
+	public boolean cancelaVenda(int id) {
+		Scanner scan = new Scanner(System.in);
+		vendaCancelada = null;
+		if(id < listaVendas.size()) {
+			vendaCancelada = listaVendas.indexOf(id);
+		}
+		if(vendaCancelada == null) {
+			return false;
+		}
+		System.out.println("cliente: "+vendaCancelada.getCliente().getNome());
+		System.out.println("valor: "+vendaCancelada.getValorTotal());
+		confirma = scan.nextLine("digite 's' para confirmar");
+		if(!confirma.equals("s")){
+			return false;
+		}
+		listaVendas[id] = null;
+		return true;
+	}
+
+	public void loopCaixa() throws SAXException, Exception,
             IOException, ParserConfigurationException, TransformerException {
 		//Xml handler de clientes 
 		LoadStoreXml lsx = new LoadStoreXml();
@@ -48,14 +79,16 @@ public class Main {
 		boolean valid = true;
 		
 		while (valid) {
+			cont = -1; // contador que serve como id das compras
 			//Inicio da operação
 			Scanner in = new Scanner(System.in);
 			System.out.printf("%n"
 					+ "Ponto de Vendas %n"
-					+ "Digite 1 para vender, 2 para cadastrar cliente, 3 para sair %n");
+					+ "Digite 1 para vender, 2 para cadastrar cliente, 3 para cancelar uma venda, 4 para sair e fechar caixa %n");
 			int option = in.nextInt();		
 			switch (option) {
 				case 1: {
+					cont += 1;	// atualizo id
 					//CPF do cliente
 					Scanner inputcpf = new Scanner(System.in);
 					boolean pessoaInvalida = true;
@@ -102,9 +135,10 @@ public class Main {
 					Scanner inputpagamento = new Scanner(System.in);
 					byte pagamento = inputpagamento.nextByte();
 					
-					Venda venda = new Venda(desconto, pagamento, cliente, produtosVenda);
+					Venda venda = new Venda(cont, desconto, pagamento, cliente, produtosVenda);
 					venda.calcularTotal();
 					System.out.printf("O valor total foi "+venda.getValorTotal());
+					System.out.printf("O id da venda foi "+venda.getId());
 					break;
 				}
 				case 2: {
@@ -112,11 +146,15 @@ public class Main {
 					break;
 				}
 				case 3: {
+					venda = in.next
+					cancelaVenda();
+				}
+				case 4: {
 					valid = false;
 					System.out.print("Fechamento de Caixa");
 					break;
 				}
-				case 4: {
+				case 5: { // testa acha cliente
 					Scanner scan = new Scanner(System.in);
         			System.out.println("insira cpf do cliente");
         			String c = scan.nextLine();
@@ -126,8 +164,14 @@ public class Main {
 				}
 			}
 		}
-	
-		
-		
+	}
+}
+
+public class Main {
+	public static void main(String[] args) throws SAXException, Exception,
+            IOException, ParserConfigurationException, TransformerException {
+		Caixa caixa = new Caixa();
+		b = caixa.loopCaixa();		//quando usuario pedir pra fechar caixa, só sai do metodo de loop e encerra
+		caixa.fechamentoDeCaixa();	
 	}
 }
