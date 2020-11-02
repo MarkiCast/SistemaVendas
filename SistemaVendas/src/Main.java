@@ -8,37 +8,57 @@ import javax.xml.transform.TransformerException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-public class Caixa {
-	LinkedList<Venda> listaVendas; // declaro lista vendas
+public class Main {
+	public static void main(String[] args) throws SAXException, Exception,
+            IOException, ParserConfigurationException, TransformerException {
+		Caixa caixa = new Caixa();
+		caixa.loopCaixa();		//quando usuario pedir pra fechar caixa, só sai do metodo de loop e encerra
+		caixa.fechamentoDeCaixa();	
+	}
+}
+
+class Caixa {
+	ArrayList<Venda> listaVendas; // declaro lista vendas
 
 	public Caixa() {
 		ArrayList<Venda> listaVendas = new ArrayList<Venda>();	//crio a lista ao criar caixa
 		this.listaVendas = listaVendas;
 	}
-	public boolean fechamentoDeCaixa() {
-		valorFinal = 0;
-		for (i=0; i<listaVendas.size(); i++){
-			preco = listaVendas[i].calcularTotal();
+	public void fechamentoDeCaixa() throws SAXException, Exception,
+            IOException, ParserConfigurationException, TransformerException {
+		
+		LoadStoreXml lsx = new LoadStoreXml();
+
+		int valorFinal = 0;
+		for (int i=0; i<listaVendas.size(); i++){
+			if(listaVendas.get(i)==null){
+				continue;
+			}
+			int preco = listaVendas.get(i).getValorTotal();
 			valorFinal = valorFinal + preco;
-			//salvar(listaVendas[i]);    //falta implementar
+			lsx.salvaVenda(listaVendas.get(i));
 		}
+		System.out.println("\nvalor final arrecadado no caixa: "+valorFinal);
 	}
 	public boolean cancelaVenda(int id) {
 		Scanner scan = new Scanner(System.in);
-		vendaCancelada = null;
+		Venda vendaCancelada = null;
 		if(id < listaVendas.size()) {
-			vendaCancelada = listaVendas.indexOf(id);
+			vendaCancelada = listaVendas.get(id);
 		}
 		if(vendaCancelada == null) {
+			System.out.println("venda inexistente!");
 			return false;
 		}
 		System.out.println("cliente: "+vendaCancelada.getCliente().getNome());
 		System.out.println("valor: "+vendaCancelada.getValorTotal());
-		confirma = scan.nextLine("digite 's' para confirmar");
+		
+		System.out.println("digite 's' para confirmar");
+		String confirma = scan.nextLine();
 		if(!confirma.equals("s")){
 			return false;
 		}
-		listaVendas[id] = null;
+		listaVendas.set(id, null);
 		return true;
 	}
 
@@ -67,10 +87,10 @@ public class Caixa {
 		produtos.put(sapato.getUpc(), sapato);
 		*/
 		if(lsx.fileVazia("produtos")){
-			Produto calça = new Produto(100, 1L, "Calça");
+			Produto calca = new Produto(100, 1L, "Calca");
 			Produto camisa = new Produto(50, 2L, "Camisa");
 			Produto sapato = new Produto(150, 3L, "sapato n40");
-			lsx.cadastraProduto(calça);
+			lsx.cadastraProduto(calca);
 			lsx.cadastraProduto(camisa);
 			lsx.cadastraProduto(sapato);
 		}
@@ -78,8 +98,9 @@ public class Caixa {
 		
 		boolean valid = true;
 		
+		
+		int cont = -1; // contador que serve como id das compras
 		while (valid) {
-			cont = -1; // contador que serve como id das compras
 			//Inicio da operação
 			Scanner in = new Scanner(System.in);
 			System.out.printf("%n"
@@ -88,7 +109,6 @@ public class Caixa {
 			int option = in.nextInt();		
 			switch (option) {
 				case 1: {
-					cont += 1;	// atualizo id
 					//CPF do cliente
 					Scanner inputcpf = new Scanner(System.in);
 					boolean pessoaInvalida = true;
@@ -134,11 +154,13 @@ public class Caixa {
 					System.out.printf("Qual a forma de pagamento? 1-Credito  2-Debito  3-Cheque  4-Crediário %n");
 					Scanner inputpagamento = new Scanner(System.in);
 					byte pagamento = inputpagamento.nextByte();
-					
+					cont += 1;
 					Venda venda = new Venda(cont, desconto, pagamento, cliente, produtosVenda);
+					listaVendas.add(venda);
+					
 					venda.calcularTotal();
 					System.out.printf("O valor total foi "+venda.getValorTotal());
-					System.out.printf("O id da venda foi "+venda.getId());
+					System.out.printf("\nO id da venda foi "+venda.getId());
 					break;
 				}
 				case 2: {
@@ -146,8 +168,10 @@ public class Caixa {
 					break;
 				}
 				case 3: {
-					venda = in.next
-					cancelaVenda();
+					System.out.println("digite o id da venda");
+					int venda = in.nextInt();
+					cancelaVenda(venda);
+					break;
 				}
 				case 4: {
 					valid = false;
@@ -164,14 +188,5 @@ public class Caixa {
 				}
 			}
 		}
-	}
-}
-
-public class Main {
-	public static void main(String[] args) throws SAXException, Exception,
-            IOException, ParserConfigurationException, TransformerException {
-		Caixa caixa = new Caixa();
-		b = caixa.loopCaixa();		//quando usuario pedir pra fechar caixa, só sai do metodo de loop e encerra
-		caixa.fechamentoDeCaixa();	
 	}
 }
