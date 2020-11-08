@@ -3,19 +3,36 @@ import java.util.ArrayList;
 
 public class Venda {
 
-	private int valorTotal = 0;
-	private int desconto = 100;
+	private int id;
+	private int valorTotal;
+	private int desconto = 0;
 	private byte tipoPagamento;
 	Cliente cliente;
 	ArrayList<Produto> produtos;
 
-	public Venda(int desconto, byte tipoPagamento, Cliente cliente, ArrayList<Produto> produtos) {
+	public Venda(int id, int desconto, byte tipoPagamento, Cliente cliente, ArrayList<Produto> produtos) {
+		this.id = id;
 		this.desconto = desconto;
 		this.tipoPagamento = tipoPagamento;
 		this.cliente = cliente;
 		this.produtos = produtos;
 	}
 
+	public Venda() {
+		produtos = new ArrayList<Produto>();
+	}
+	
+	public Venda(int id, int desconto, byte tipoPagamento, Cliente cliente) {
+		this.id = id;
+		this.desconto = desconto;
+		this.tipoPagamento = tipoPagamento;
+		this.cliente = cliente;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
 	public int getValorTotal() {
 		return valorTotal;
 	}
@@ -57,10 +74,10 @@ public class Venda {
 	} 
 	
 	public void calcularTotal() {
-		for(int i = 0; i < produtos.size()-1; i++) {
+		for(int i = 0; i < produtos.size(); i++) {
 			valorTotal += produtos.get(i).getValor();
 		}
-		valorTotal = valorTotal*((100-desconto)/100);
+		valorTotal = valorTotal*((100-desconto)/100);  //bug arredondamento por valorTotal ser inteiro
 	}
 	
 }
