@@ -1,6 +1,16 @@
 
-public class cliente {
+public class Cliente {
 
+	private String name;
+	private Long cpf;
+	
+	public Cliente(String name, Long cpf) {
+		this.name = name;
+		this.cpf = cpf;
+	}
+	
+	public Cliente() {}
+	
     public String getNome(){
         return name;
     }
