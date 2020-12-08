@@ -2,8 +2,8 @@ package InterfaceGráfica;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -11,12 +11,15 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 
-public class JanelaCadastro extends JFrame {
+public class JanelaCadastro{
 
-	private JPanel contentPane;
+	private JFrame frmJanelaCadastro;
+	private JPanel panel;
 	private JTextField txtCpf;
 	private JTextField cpf;
 	private JTextField txtNome;
@@ -31,16 +34,19 @@ public class JanelaCadastro extends JFrame {
 	private JTextField municipio;
 	private JTextField cep;
 	private JTextField txtCep;
-
+	
+	private String[] info;
+	
+	public boolean checkCadastro = false;
+	
 	/**
-	 * Launch the application.
+	 * Test the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					JanelaCadastro frame = new JanelaCadastro();
-					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,31 +55,42 @@ public class JanelaCadastro extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the application.
 	 */
 	public JanelaCadastro() {
-		setTitle("Cadastro");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 485, 339);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		initialize();
+		frmJanelaCadastro.setVisible(true);
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmJanelaCadastro = new JFrame();
+		frmJanelaCadastro.setTitle("Cadastro");
+		frmJanelaCadastro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmJanelaCadastro.setBounds(100, 100, 485, 339);
+		frmJanelaCadastro.getContentPane().setLayout(null);
+		frmJanelaCadastro.setForeground(SystemColor.activeCaption);
+		frmJanelaCadastro.setFont(null);
+		frmJanelaCadastro.setBackground(SystemColor.window);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBackground(SystemColor.menu);
 		panel.setBounds(0, 0, 472, 304);
-		contentPane.add(panel);
+		frmJanelaCadastro.getContentPane().add(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{100, 365, 0};
 		gbl_panel.rowHeights = new int[]{29, 30, 29, 30, 29, 30, 29, 38, 29, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		txtCpf = new JTextField();
-		txtCpf.setBackground(SystemColor.inactiveCaptionBorder);
+		txtCpf.setFocusable(false);
+		txtCpf.setForeground(Color.BLACK);
 		txtCpf.setEditable(false);
+		txtCpf.setBackground(SystemColor.inactiveCaptionBorder);
 		txtCpf.setText("CPF / CNPJ");
 		GridBagConstraints gbc_txtCpf = new GridBagConstraints();
 		gbc_txtCpf.fill = GridBagConstraints.BOTH;
@@ -83,7 +100,7 @@ public class JanelaCadastro extends JFrame {
 		panel.add(txtCpf, gbc_txtCpf);
 		txtCpf.setColumns(10);
 		
-		cpf = new JTextField();
+		cpf = new JTextField(14);
 		GridBagConstraints gbc_cpf = new GridBagConstraints();
 		gbc_cpf.fill = GridBagConstraints.BOTH;
 		gbc_cpf.insets = new Insets(0, 0, 5, 0);
@@ -93,9 +110,9 @@ public class JanelaCadastro extends JFrame {
 		cpf.setColumns(10);
 		
 		txtNome = new JTextField();
+		txtNome.setFocusable(false);
 		txtNome.setText("Nome");
 		txtNome.setBackground(SystemColor.inactiveCaptionBorder);
-		txtNome.setEditable(false);
 		GridBagConstraints gbc_txtNome = new GridBagConstraints();
 		gbc_txtNome.fill = GridBagConstraints.BOTH;
 		gbc_txtNome.insets = new Insets(0, 0, 5, 5);
@@ -114,6 +131,7 @@ public class JanelaCadastro extends JFrame {
 		nome.setColumns(10);
 		
 		txtRua = new JTextField();
+		txtRua.setFocusable(false);
 		txtRua.setText("Rua");
 		txtRua.setBackground(SystemColor.inactiveCaptionBorder);
 		txtRua.setEditable(false);
@@ -135,6 +153,7 @@ public class JanelaCadastro extends JFrame {
 		rua.setColumns(10);
 		
 		txtNumero = new JTextField();
+		txtNumero.setFocusable(false);
 		txtNumero.setEditable(false);
 		txtNumero.setText("Numero");
 		txtNumero.setBackground(SystemColor.inactiveCaptionBorder);
@@ -156,6 +175,7 @@ public class JanelaCadastro extends JFrame {
 		numero.setColumns(10);
 		
 		txtBairro = new JTextField();
+		txtBairro.setFocusable(false);
 		txtBairro.setEditable(false);
 		txtBairro.setText("Bairro");
 		txtBairro.setBackground(SystemColor.inactiveCaptionBorder);
@@ -170,7 +190,9 @@ public class JanelaCadastro extends JFrame {
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				info = new String[] {getCpf(), getNome(), getRua(), getNumero(), getBairro(), getMunicipio(), getCep()};
+				checkCadastro = true;
+				frmJanelaCadastro.dispatchEvent(new WindowEvent(frmJanelaCadastro, WindowEvent.WINDOW_CLOSING));
 			}
 		});
 		
@@ -184,6 +206,7 @@ public class JanelaCadastro extends JFrame {
 		bairro.setColumns(10);
 		
 		txtMunicipio = new JTextField();
+		txtMunicipio.setFocusable(false);
 		txtMunicipio.setEditable(false);
 		txtMunicipio.setText("Municipio");
 		txtMunicipio.setBackground(SystemColor.inactiveCaptionBorder);
@@ -205,6 +228,7 @@ public class JanelaCadastro extends JFrame {
 		municipio.setColumns(10);
 		
 		txtCep = new JTextField();
+		txtCep.setFocusable(false);
 		txtCep.setEditable(false);
 		txtCep.setBackground(SystemColor.inactiveCaptionBorder);
 		txtCep.setText("CEP");
@@ -216,7 +240,7 @@ public class JanelaCadastro extends JFrame {
 		panel.add(txtCep, gbc_txtCep);
 		txtCep.setColumns(10);
 		
-		cep = new JTextField();
+		cep = new JTextField(8);
 		GridBagConstraints gbc_cep = new GridBagConstraints();
 		gbc_cep.fill = GridBagConstraints.BOTH;
 		gbc_cep.insets = new Insets(0, 0, 5, 0);
@@ -228,7 +252,11 @@ public class JanelaCadastro extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				Object[] options = {"Sim", "Não"};
+				int answer = JOptionPane.showOptionDialog(null, "Deseja mesmo cancelar?", "Cancelar", JOptionPane.DEFAULT_OPTION, JOptionPane.YES_NO_CANCEL_OPTION, null, options, options[0]);
+				if (answer == JOptionPane.YES_OPTION) {
+					frmJanelaCadastro.dispatchEvent(new WindowEvent(frmJanelaCadastro, WindowEvent.WINDOW_CLOSING));
+				}
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
@@ -245,5 +273,40 @@ public class JanelaCadastro extends JFrame {
 		gbc_btnOK.gridy = 8;
 		panel.add(btnOK, gbc_btnOK);
 	}
+
+	public String getCpf() {
+		return cpf.getText();
+	}
+
+	public String getNome() {
+		return nome.getText();
+	}
+
+	public String getRua() {
+		return rua.getText();
+	}
+
+	public String getNumero() {
+		return numero.getText();
+	}
+
+	public String getBairro() {
+		return bairro.getText();
+	}
+
+	public String getMunicipio() {
+		return municipio.getText();
+	}
+
+	public String getCep() {
+		return cep.getText();
+	}
 	
+	public JFrame getFrame() {
+		return frmJanelaCadastro;
+	}
+
+	public String[] getInfo() {
+		return info;
+	}
 }
